@@ -17,6 +17,7 @@ import Show from "components/Appointment/Show"
 import Confirm from "components/Appointment/Confirm"
 import Status from "components/Appointment/Status"
 import Error from "components/Appointment/Error"
+import Form from "components/Appointment/Form"
 
 storiesOf("Button", module)
   .addParameters({
@@ -155,3 +156,15 @@ storiesOf("Appointment", module)
   />)
   .add("Status", () => <Status message="Spinning the Circle" />)
   .add("Error", () => <Error message="Ya dun goofed" onClose={action("onClose")} />)
+  .add("Create", () => <Form
+    interviewers={interviewers}
+    onSave={action("onSave")}
+    onCancel={action("onCancel")}
+  />)
+  .add("Edit", () => <Form
+    name="Matt"
+    interviewers={interviewers}
+    interviewer={2}
+    onSave={action("onSave")}
+    onCancel={action("onCancel")}
+  />)
