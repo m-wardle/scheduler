@@ -11,9 +11,9 @@ storiesOf("Button", module)
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
   })
-  .add("Base", () => <Button>Base</Button>)
-  .add("Confirm", () => <Button confirm>Confirm</Button>)
-  .add("Danger", () => <Button danger>Cancel</Button>)
+  .add("Base", () => <Button onClick={action("button-clicked")}>Base</Button>)
+  .add("Confirm", () => <Button confirm onClick={action("button-clicked")}>Confirm</Button>)
+  .add("Danger", () => <Button danger onClick={action("button-clicked")}>Cancel</Button>)
   .add("Clickable", () => (
     <Button onClick={action("button-clicked")}>Clickable</Button>
   ))
