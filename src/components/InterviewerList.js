@@ -8,6 +8,7 @@ export default function InterviewerList({ interviewers, value, onChange }) {
   const interviewerList = interviewers.map(item => {
     return (
       <InterviewerListItem
+        key={item.id}
         id={item.id}
         name={item.name}
         avatar={item.avatar}
