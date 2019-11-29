@@ -7,6 +7,7 @@ export default function useApplicationData() {
   const SET_INTERVIEW = "SET_INTERVIEW";
 
   function reducer(state, action) {
+    console.log(state);
     switch (action.type) {
       case SET_DAY:
         return {
@@ -21,17 +22,19 @@ export default function useApplicationData() {
           interviewers: action.interviewers
         }
       case SET_INTERVIEW:
-        let daysArr = state.days.map((item, index) => {
-          if (item.name !== state.day) {
-            return item
-          } else {
-            return {
-              ...item,
-              spots: (action.interview ? item.spots - 1 : item.spots + 1)
-            }
-          }
-        })
+        let changeDay;
 
+        if (1 <= action.id <= 5) {
+          changeDay = 0
+        } else if (6 <= action.id <= 10) {
+          changeDay = 1
+        } else if (11 <= action.id <= 15) {
+          changeDay = 2
+        } else if (16 <= action.id <= 20) {
+          changeDay = 3
+        } else if (21 <= action.id <= 25) {
+          changeDay = 4
+        }
 
         return {
           ...state,
@@ -43,7 +46,14 @@ export default function useApplicationData() {
               interview: { ...action.interview }
             }
           },
-          days: daysArr
+          days: [
+            ...state.days,
+            [changeDay]: {
+              ...state.days[changeDay],
+              spots: (action.interview ? state.days[changeDay].spots - 1 : state.days[changeDay].spots + 1)
+            }
+
+          ]
         }
       default:
         throw new Error(
@@ -88,6 +98,7 @@ export default function useApplicationData() {
 
     sock.addEventListener("message", msg => {
       let msgObj = JSON.parse(msg.data);
+      console.log(msgObj);
       dispatch(msgObj);
     })
 
