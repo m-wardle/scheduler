@@ -1,66 +1,61 @@
 import React, { useReducer, useEffect } from "react";
 import axios from "axios";
 
-export default function useApplicationData() {
-  const SET_DAY = "SET_DAY";
-  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-  const SET_INTERVIEW = "SET_INTERVIEW";
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
 
-  function reducer(state, action) {
-    console.log(state);
-    switch (action.type) {
-      case SET_DAY:
-        return {
-          ...state,
-          day: action.day,
-        }
-      case SET_APPLICATION_DATA:
-        return {
-          ...state,
-          days: action.days,
-          appointments: action.appointments,
-          interviewers: action.interviewers
-        }
-      case SET_INTERVIEW:
-        let changeDay;
+function reducer(state, action) {
+  switch (action.type) {
+    case SET_DAY:
+      return {
+        ...state,
+        day: action.day,
+      }
+    case SET_APPLICATION_DATA:
+      return {
+        ...state,
+        days: action.days,
+        appointments: action.appointments,
+        interviewers: action.interviewers
+      }
+    case SET_INTERVIEW:
+      let changeDay;
 
-        if (1 <= action.id <= 5) {
-          changeDay = 0
-        } else if (6 <= action.id <= 10) {
-          changeDay = 1
-        } else if (11 <= action.id <= 15) {
-          changeDay = 2
-        } else if (16 <= action.id <= 20) {
-          changeDay = 3
-        } else if (21 <= action.id <= 25) {
-          changeDay = 4
-        }
+      if (1 <= action.id && action.id <= 5) {
+        changeDay = 0
+      } else if (6 <= action.id && action.id <= 10) {
+        changeDay = 1
+      } else if (11 <= action.id && action.id <= 15) {
+        changeDay = 2
+      } else if (16 <= action.id && action.id <= 20) {
+        changeDay = 3
+      } else if (21 <= action.id && action.id <= 25) {
+        changeDay = 4
+      }
 
-        return {
-          ...state,
-          id: action.id,
-          appointments: {
-            ...state.appointments,
-            [action.id]: {
-              ...state.appointments[action.id],
-              interview: { ...action.interview }
-            }
-          },
-          days: [
-            ...state.days,
-            [changeDay]: {
-              ...state.days[changeDay],
-              spots: (action.interview ? state.days[changeDay].spots - 1 : state.days[changeDay].spots + 1)
-            }
+      let dayArr = [...state.days];
+      dayArr[changeDay].spots = (action.interview ? dayArr[changeDay].spots - 1 : dayArr[changeDay].spots + 1)
 
-          ]
-        }
-      default:
-        throw new Error(
-          `Tried to reduce with unsupported action type: ${action.type}`
-        )
-    }
+      return {
+        ...state,
+        appointments: {
+          ...state.appointments,
+          [action.id]: {
+            ...state.appointments[action.id],
+            interview: { ...action.interview }
+          }
+        },
+        days: [...dayArr]
+      }
+    default:
+      throw new Error(
+        `Tried to reduce with unsupported action type: ${action.type}`
+      )
   }
+}
+
+export default function useApplicationData() {
 
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
@@ -99,7 +94,7 @@ export default function useApplicationData() {
     sock.addEventListener("message", msg => {
       let msgObj = JSON.parse(msg.data);
       console.log(msgObj);
-      dispatch(msgObj);
+      msgObj.type === SET_INTERVIEW && dispatch({ ...msgObj });
     })
 
     // close websocket when component unmounts
