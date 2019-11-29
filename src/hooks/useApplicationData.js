@@ -27,15 +27,22 @@ export default function useApplicationData() {
           } else {
             return {
               ...item,
-              spots: (action.add ? item.spots - 1 : item.spots + 1)
+              spots: (action.interview ? item.spots - 1 : item.spots + 1)
             }
           }
         })
 
+
         return {
           ...state,
           id: action.id,
-          appointments: action.appointments,
+          appointments: {
+            ...state.appointments,
+            [action.id]: {
+              ...state.appointments[action.id],
+              interview: { ...action.interview }
+            }
+          },
           days: daysArr
         }
       default:
@@ -53,52 +60,58 @@ export default function useApplicationData() {
   });
 
   useEffect(() => {
+
     Promise.all([
       axios.get("/api/days"),
       axios.get("/api/appointments"),
       axios.get("/api/interviewers")
     ]).then((all) => {
-      dispatch({ type: SET_APPLICATION_DATA, days: all[0].data, appointments: all[1].data, interviewers: all[2].data })
+      dispatch({
+        type: SET_APPLICATION_DATA,
+        days: all[0].data,
+        appointments: all[1].data,
+        interviewers: all[2].data
+      })
 
     })
       .catch(err => console.log(err));
+
+    const sock = new WebSocket("ws://localhost:8001");
+
+    // Open WebSocket
+
+    sock.addEventListener("open", () => {
+      console.log("Connected to server");
+    })
+
+    // Respond to messages from server
+
+    sock.addEventListener("message", msg => {
+      let msgObj = JSON.parse(msg.data);
+      dispatch(msgObj);
+    })
+
+    // close websocket when component unmounts
+
+    return () => {
+      sock.close()
+    }
+
   }, [])
 
   const setDay = day => dispatch({ type: SET_DAY, day });
 
-  function bookInterview(id, interview) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-
+  const bookInterview = function (id, interview) {
     if (!interview.student || !interview.interviewer) {
       return Promise.reject("Name or interviewer field left blank")
     } else {
       return axios.put(`/api/appointments/${id}`, { interview })
-        .then(dispatch({ type: SET_INTERVIEW, id, appointments, add: true }));
     }
 
   }
 
   function cancelInterview(id) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-
     return axios.delete(`/api/appointments/${id}`)
-      .then(dispatch({ type: SET_INTERVIEW, id, appointments, add: false }));
   }
 
   return {
