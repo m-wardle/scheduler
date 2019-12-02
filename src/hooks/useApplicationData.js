@@ -115,12 +115,7 @@ export default function useApplicationData() {
   const setDay = day => dispatch({ type: SET_DAY, day });
 
   const bookInterview = function (id, interview) {
-    if (!interview.student || !interview.interviewer) {
-      return Promise.reject("Name or interviewer field left blank")
-    } else {
-      return axios.put(`/api/appointments/${id}`, { interview })
-    }
-
+    return axios.put(`/api/appointments/${id}`, { interview })
   }
 
   function cancelInterview(id) {
