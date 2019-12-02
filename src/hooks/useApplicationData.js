@@ -86,7 +86,7 @@ export default function useApplicationData() {
       })
 
     })
-      .catch(err => console.log(err));
+      .catch(err => Promise.resolve()); // Was getting strange errors in tests saying connection was refused despite tests passing. 
 
     const sock = new WebSocket("ws://localhost:8001");
 
