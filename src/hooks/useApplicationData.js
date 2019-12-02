@@ -35,7 +35,14 @@ function reducer(state, action) {
       }
 
       let dayArr = [...state.days];
-      dayArr[changeDay].spots = (action.interview ? dayArr[changeDay].spots - 1 : dayArr[changeDay].spots + 1)
+      console.log(state.appointments[action.id].interview)
+
+      dayArr[changeDay].spots = (action.interview ?
+        (state.appointments[action.id].interview ?
+          dayArr[changeDay].spots :
+          dayArr[changeDay].spots - 1) :
+        dayArr[changeDay].spots + 1)
+
 
       return {
         ...state,
@@ -43,7 +50,7 @@ function reducer(state, action) {
           ...state.appointments,
           [action.id]: {
             ...state.appointments[action.id],
-            interview: { ...action.interview }
+            interview: action.interview
           }
         },
         days: [...dayArr]
