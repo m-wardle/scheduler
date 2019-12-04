@@ -19,6 +19,8 @@ export default function reducer(state, action) {
     case SET_INTERVIEW:
       let changeDay;
 
+      // Selecting the correct day for spots remaining feature so it properly updates other users via WebSockets. Not the most scalable solution but works for current 1-week implementation.
+
       if (1 <= action.id && action.id <= 5) {
         changeDay = 0
       } else if (6 <= action.id && action.id <= 10) {
