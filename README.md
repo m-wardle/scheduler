@@ -16,6 +16,13 @@ Live updates to multiple users via WebSockets
 
 ## Setup
 
+### Easy Way
+
+1. Just go [here!](intrvw-sched.netlify.com)
+2. That's it - you're done! 👍
+
+### Hard way
+
 1. Download or clone this repository.
 2. Install dependencies with `npm install`.
 3. Clone or download the API Server from [this repository](https://github.com/m-wardle/scheduler-api).
