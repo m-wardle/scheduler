@@ -54,6 +54,5 @@
       "!src/index.js"
     ]
   },
-  "proxy": "http://localhost:8001",
-  "secure": false
+  "proxy": "http://localhost:8001"
 }

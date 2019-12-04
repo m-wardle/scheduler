@@ -1,3 +1,5 @@
+/* global cy */
+
 describe("Appointments", () => {
 
   beforeEach(() => {
