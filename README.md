@@ -4,6 +4,8 @@ Scheduler is a singe-page interview scheduling application built using React.js.
 
 The simple interface allows users to view, book, edit, and cancel interviews with mentors. Booking information is communicated with the backend server using Axios, and other users are immediately shown any changes via WebSockets.
 
+## Demos
+
 !["Demo of single user experience"](https://github.com/m-wardle/scheduler/blob/master/public/images/Basic%20Use.gif?raw=true)
 
 Using Interview Scheduluer to book, edit, and cancel appointments.
