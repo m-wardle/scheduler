@@ -18,22 +18,22 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
-  
+
   deploy:
     machine:
       enabled: true
 
-  working_directory: ~/client
+    working_directory: ~/client
 
-  steps:
-    - add_ssh_keys:
-        fingerprints:
-          - "ca:fb:1b:fd:30:64:fb:7b:66:cf:88:5b:60:5c:46:69"
-    - checkout
-    - run:
-        name: Push Master to Production
-        command: |
-          git push https://github.com/m-wardle/scheduler.git master:production
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ca:fb:1b:fd:30:64:fb:7b:66:cf:88:5b:60:5c:46:69"
+      - checkout
+      - run:
+          name: Push Master to Production
+          command: |
+            git push https://github.com/m-wardle/scheduler.git master:production
 
 workflows:
   version: 2
