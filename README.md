@@ -18,8 +18,9 @@ Live updates to multiple users via WebSockets
 
 ### Easy Way
 
-1. Just go [here!](intrvw-sched.netlify.com)
-2. That's it - you're done! 👍
+1. Just go [here!](https://intrvw-sched.netlify.com/)
+2. If appointments aren't populating, you may need to wait a few moments and refresh while the API server starts up.
+3. That's it - you're done! 👍
 
 ### Hard way
 
